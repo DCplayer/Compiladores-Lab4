@@ -4,7 +4,7 @@ public class Rama {
     private String contenido;
     private int ID;
 
-    private boolean nullable;
+    private boolean nullable = false;
     private ArrayList<Rama> firstPos = new ArrayList<>();
     private ArrayList<Rama> lastPos = new ArrayList<>();
     private ArrayList<Rama> followPos = new ArrayList<>();
@@ -24,6 +24,18 @@ public class Rama {
 
     public void setRightChild(Rama rightChild) {
         this.rightChild = rightChild;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    public boolean isNullable() {
+        return nullable;
     }
 }
 

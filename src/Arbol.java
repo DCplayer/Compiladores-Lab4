@@ -51,4 +51,22 @@ public class Arbol {
 
     }
 
+    public void nombrarListas(){
+        int contador = 1;
+        for (Rama r: transicionesIdentificadas){
+            r.setID(contador);
+            contador = contador + 1;
+        }
+    }
+
+    public void nullable(){
+        for(Rama r: transicionesIdentificadas){
+            r.setNullable(false);
+        }
+
+        for(Rama r: ramasDelArbol){
+            /*Se necesita iniciar cada rama con false, por lo que se tiene que revisar todos los nodos
+            * y ver cuales tienen identificador de operadores kleene o kleene suma para decir que es true o no*/
+    }
+
 }
