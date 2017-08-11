@@ -13,7 +13,9 @@ public class Arbol {
     }
 
     public void crearElArbol(String regex){
-        String postfixeado = norma.PostFixYNormalizar(regex);
+        String conNumeralAlfinal = "("+ regex +")#";
+        String postfixeado = norma.PostFixYNormalizar(conNumeralAlfinal);
+
 
         int j = postfixeado.length();
         for (int i = 0; i < j; i++) {
@@ -59,14 +61,100 @@ public class Arbol {
         }
     }
 
-    public void nullable(){
-        for(Rama r: transicionesIdentificadas){
-            r.setNullable(false);
+    public void nullable() {
+        for (Rama r : ramasDelArbol) {
+            if(r.getContenido().equals("@")){
+                r.setNullable(true);
+            }
+            else if(r.getContenido().equals("*")){
+                r.setNullable(true);
+            }
+            else if(r.getContenido().equals("|")){
+                if(r.getLeftChild().isNullable() || r.getRightChild().isNullable()){
+                    r.setNullable(true);
+                }
+            }
+            else if(r.getContenido().equals(".")){
+                if(r.getLeftChild().isNullable() && r.getRightChild().isNullable()){
+                    r.setNullable(true);
+                }
+
+            }
+        }
+    }
+
+    public void firstPos(){
+        for (Rama i: transicionesIdentificadas){
+            if (!i.getContenido().equals("@")){
+                i.getFirstPos().add(i);
+            }
         }
 
-        for(Rama r: ramasDelArbol){
-            /*Se necesita iniciar cada rama con false, por lo que se tiene que revisar todos los nodos
-            * y ver cuales tienen identificador de operadores kleene o kleene suma para decir que es true o no*/
+        for (Rama r: ramasDelArbol){
+            if(r.getContenido().equals("*")){
+                r.getFirstPos().addAll(r.getLeftChild().getFirstPos());
+            }
+            else if(r.getContenido().equals("|")){
+                r.getFirstPos().addAll(r.getLeftChild().getFirstPos());
+                r.getFirstPos().addAll(r.getRightChild().getFirstPos());
+            }
+            else if(r.getContenido().equals(".")){
+                if(r.getLeftChild().isNullable()){
+                    r.getFirstPos().addAll(r.getLeftChild().getFirstPos());
+                    r.getFirstPos().addAll(r.getRightChild().getFirstPos());
+                }
+                else{
+                    r.getFirstPos().addAll(r.getLeftChild().getFirstPos());
+                }
+            }
+        }
     }
+
+    public void lastPos(){
+        for (Rama i: transicionesIdentificadas){
+            if(!i.getContenido().equals("@")){
+                i.getLastPos().add(i);
+            }
+        }
+
+        for (Rama r: ramasDelArbol){
+            if(r.getContenido().equals("*")){
+                r.getLastPos().addAll(r.getLeftChild().getLastPos());
+            }
+            else if(r.getContenido().equals("|")){
+                r.getLastPos().addAll(r.getLeftChild().getLastPos());
+                r.getLastPos().addAll(r.getRightChild().getLastPos());
+            }
+            else if(r.getContenido().equals(".")){
+                if(r.getRightChild().isNullable()){
+                    r.getLastPos().addAll(r.getLeftChild().getLastPos());
+                    r.getLastPos().addAll(r.getRightChild().getLastPos());
+                }
+                else{
+                    r.getLastPos().addAll(r.getRightChild().getLastPos());
+                }
+
+            }
+        }
+    }
+
+    /*REVISAR: Si el arqueotipo de followPos de concatenacion funciona tambien para el Or*/
+    public void followPos(){
+        for (Rama r: ramasDelArbol){
+            if(r.getContenido().equals(".") || r.getContenido().equals("|")){
+                for(Rama x :r.getLeftChild().getLastPos()){
+                    x.getFollowPos().addAll(r.getRightChild().getFirstPos());
+                }
+
+            }
+            else if(r.getContenido().equals("*")){
+                for (Rama y: r.getLastPos()){
+                    y.getFollowPos().addAll(r.getFirstPos()); 
+                }
+            }
+        }
+    }
+
+
 
 }

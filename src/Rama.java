@@ -37,5 +37,29 @@ public class Rama {
     public boolean isNullable() {
         return nullable;
     }
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public Rama getLeftChild() {
+        return leftChild;
+    }
+
+    public Rama getRightChild() {
+        return rightChild;
+    }
+
+    public ArrayList<Rama> getFirstPos() {
+        return firstPos;
+    }
+
+    public ArrayList<Rama> getLastPos() {
+        return lastPos;
+    }
+
+    public ArrayList<Rama> getFollowPos() {
+        return followPos;
+    }
 }
 
