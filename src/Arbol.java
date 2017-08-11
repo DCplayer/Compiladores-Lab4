@@ -149,7 +149,7 @@ public class Arbol {
             }
             else if(r.getContenido().equals("*")){
                 for (Rama y: r.getLastPos()){
-                    y.getFollowPos().addAll(r.getFirstPos()); 
+                    y.getFollowPos().addAll(r.getFirstPos());
                 }
             }
         }
