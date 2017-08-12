@@ -65,6 +65,8 @@ public class Main {
         System.out.println("Tiempo de convertir el AFN a un ADF");
         System.out.println("" + tiempoConvertirAFNAFD + " milisegundos");
 
+
+
         boolean seguimos = true;
         while (seguimos){
 
@@ -107,15 +109,26 @@ public class Main {
             }
         }
 
+
         Arbol elArbol = new Arbol();
         ArrayList<NodosRamas> directo = elArbol.CrearElAFDDirecto(regex);
+
+        /*Identificar los nodos del AFD*/
+        int numeroParaElID = 0;
+        for(NodosRamas nodoRama: directo){
+            nodoRama.setId(numeroParaElID);
+            numeroParaElID = numeroParaElID + 1;
+        }
+
+
         System.out.println("*************************************************************");
         for (NodosRamas r : directo){
             System.out.println("-------------------------------------");
+            System.out.println("Mi ID es: " + r.getId());
             boolean seraFinal = false;
             for(Rama q: r.getConjunto()){
                 System.out.println(q.getID());
-                if(q.getID() == 6){
+                if(q.getContenido().equals("#")){
                     seraFinal = true;
                 }
             }
@@ -128,7 +141,7 @@ public class Main {
 
             int losStrings = 0;
             while(losStrings < r.getTransiciones().size()){
-                System.out.println("Yo voy a " + r.getArrivals().get(losStrings) + " con la trans: " + r.getTransiciones().get(losStrings));
+                System.out.println("Yo voy a " + Ramas(r.getArrivals().get(losStrings)) + " con la trans: " + r.getTransiciones().get(losStrings));
                 losStrings = losStrings + 1;
             }
 
@@ -137,6 +150,15 @@ public class Main {
 
 
 
+    }
+
+    public static String Ramas(NodosRamas noEsR){
+        String casual  ="{";
+        for (Rama i: noEsR.getConjunto()){
+            casual = casual + ""  + i.getID() + ", ";
+        }
+        casual = casual + "}";
+        return  casual;
     }
 }
 

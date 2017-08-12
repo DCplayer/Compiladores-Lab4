@@ -7,6 +7,8 @@ import java.util.HashSet;
 public class NodoAFD {
     private int id;
     private HashSet<Nodo> conjunto;
+    private HashSet<NodoAFD> conjuntoMinimo;
+
     private ArrayList<String> transiciones = new ArrayList<>();
     private ArrayList<NodoAFD> arrivals = new ArrayList<>();
 
