@@ -1,16 +1,23 @@
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Rama {
     private String contenido;
     private int ID;
 
     private boolean nullable = false;
-    private ArrayList<Rama> firstPos = new ArrayList<>();
-    private ArrayList<Rama> lastPos = new ArrayList<>();
-    private ArrayList<Rama> followPos = new ArrayList<>();
+    private HashSet<Rama> firstPos = new HashSet<>();
+    private HashSet<Rama> lastPos = new HashSet<>();
+    private HashSet<Rama> followPos = new HashSet<>();
 
     private Rama leftChild;
     private Rama rightChild;
+
+    /*Tomaremos firstPos como el identificador de las ramas que tiene cada RAMA*/
+    private ArrayList<String> transiciones = new ArrayList<>();
+    private ArrayList<Rama> arrivals = new ArrayList<>();
 
 
     public Rama(String s){
@@ -50,16 +57,26 @@ public class Rama {
         return rightChild;
     }
 
-    public ArrayList<Rama> getFirstPos() {
+    public HashSet<Rama> getFirstPos() {
         return firstPos;
     }
 
-    public ArrayList<Rama> getLastPos() {
+    public HashSet<Rama> getLastPos() {
         return lastPos;
     }
 
-    public ArrayList<Rama> getFollowPos() {
+    public HashSet<Rama> getFollowPos() {
         return followPos;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }
 

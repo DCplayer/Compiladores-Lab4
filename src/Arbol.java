@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Stack;
 
 public class Arbol {
+    private int index = 0;
     private ArrayList<Rama> transicionesIdentificadas = new ArrayList<>();
     private ArrayList<Rama> ramasDelArbol = new ArrayList<>();
 
@@ -59,6 +61,9 @@ public class Arbol {
             r.setID(contador);
             contador = contador + 1;
         }
+
+
+
     }
 
     public void nullable() {
@@ -84,12 +89,6 @@ public class Arbol {
     }
 
     public void firstPos(){
-        for (Rama i: transicionesIdentificadas){
-            if (!i.getContenido().equals("@")){
-                i.getFirstPos().add(i);
-            }
-        }
-
         for (Rama r: ramasDelArbol){
             if(r.getContenido().equals("*")){
                 r.getFirstPos().addAll(r.getLeftChild().getFirstPos());
@@ -111,12 +110,6 @@ public class Arbol {
     }
 
     public void lastPos(){
-        for (Rama i: transicionesIdentificadas){
-            if(!i.getContenido().equals("@")){
-                i.getLastPos().add(i);
-            }
-        }
-
         for (Rama r: ramasDelArbol){
             if(r.getContenido().equals("*")){
                 r.getLastPos().addAll(r.getLeftChild().getLastPos());
@@ -139,9 +132,10 @@ public class Arbol {
     }
 
     /*REVISAR: Si el arqueotipo de followPos de concatenacion funciona tambien para el Or*/
+    /*ARREGLADO: El OR no afecta al calculo de followPos, ni el KleeneSuma. Simplemente se obvian de la ecuacion*/
     public void followPos(){
         for (Rama r: ramasDelArbol){
-            if(r.getContenido().equals(".") || r.getContenido().equals("|")){
+            if(r.getContenido().equals(".")){
                 for(Rama x :r.getLeftChild().getLastPos()){
                     x.getFollowPos().addAll(r.getRightChild().getFirstPos());
                 }
@@ -154,6 +148,104 @@ public class Arbol {
             }
         }
     }
+
+    public void primeroLoPrimerio(){
+        for (Rama i: transicionesIdentificadas){
+            if (!i.getContenido().equals("@")){
+                i.getFirstPos().add(i);
+                i.getLastPos().add(i);
+            }
+        }
+    }
+
+    public HashSet<Rama> movimiento(String identity, NodosRamas x){
+        ArrayList<Rama> y = new ArrayList<>();
+        for (Rama r: x.getConjunto()){
+            if (r.getContenido().equals(identity)){
+                y.add(r);
+            }
+        }
+
+        HashSet<Rama> resultado = new HashSet<>();
+        for(Rama i: y){
+            resultado.addAll(i.getFollowPos());
+
+        }
+        return resultado;
+    }
+
+
+    public ArrayList<Rama> CrearElAFDDirecto(String regex){
+        crearElArbol(regex);
+        nombrarListas();
+        primeroLoPrimerio();
+        nullable();
+        firstPos();
+        lastPos();
+        followPos();
+
+        /*Creando el alfabeto del AFD*/
+        HashSet<String> alfabeto = new HashSet<>();
+        for(Rama elemento: transicionesIdentificadas){
+            if(!elemento.getContenido().equals("@") || !elemento.getContenido().equals("#")){
+                alfabeto.add(elemento.getContenido());
+            }
+
+        }
+
+        /*Encontrando la raiz del arbol recientemente creado*/
+
+        /*REVISAR ESTO POR SI CAUSA PROBLEMAS*/
+        /*Nuevo Update, probablemente ya no cause problemas, previendo que se dio el firstpos de la raiz, como se
+        * especifica en el libro del dragon*/
+        Rama Raiz = new Rama("");
+        HashSet<Rama> i = Raiz.getFirstPos();
+        NodosRamas enraizado = new NodosRamas(i);
+
+        for(Rama nodo: ramasDelArbol){
+            if(nodo.getRightChild().getContenido().equals("#")){
+                Raiz = nodo;
+            }
+        }
+
+
+        ArrayList<NodosRamas> marcado = new ArrayList<>();
+        ArrayList<NodosRamas> noMarcado = new ArrayList<>();
+
+        ArrayList<NodosRamas> nodosDelAFD = new ArrayList<>();
+
+        int tamano = 0;
+        noMarcado.add(enraizado);
+        while(true){
+            tamano = noMarcado.size();
+            if(index >= tamano){
+                break;
+            }
+
+            NodosRamas x = noMarcado.get(index);
+            marcado.add(x);
+            index = index + 1;
+
+            for (String stringy: alfabeto){
+
+                HashSet<Rama> movidaDelNodo = movimiento(stringy, x);
+
+                HashSet<Nodo> z = eClosure(x);
+                HashSet<Nodo> y = move(z, stringy);
+
+                NodoAFD nodoFinal = new NodoAFD(y);
+                nodoInicial.add(stringy, nodoFinal);
+
+                AFD.add(x,stringy,y);
+                if(!noMarcado.contains(y)){
+                    noMarcado.add(y);
+                }
+            }
+        }
+        return nodosDelAFD;
+    }
+
+
 
 
 
