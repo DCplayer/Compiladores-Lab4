@@ -193,29 +193,30 @@ public class Arbol {
 
         }
 
-        /*Encontrando la raiz del arbol recientemente creado*/
-
-        /*REVISAR ESTO POR SI CAUSA PROBLEMAS*/
-        /*Nuevo Update, probablemente ya no cause problemas, previendo que se dio el firstpos de la raiz, como se
-        * especifica en el libro del dragon*/
-        Rama Raiz = new Rama("");
-        HashSet<Rama> i = Raiz.getFirstPos();
-        NodosRamas enraizado = new NodosRamas(i);
-
-        for(Rama nodo: ramasDelArbol){
-            if(nodo.getRightChild().getContenido().equals("#")){
-                Raiz = nodo;
-            }
-        }
-
-
         ArrayList<NodosRamas> marcado = new ArrayList<>();
         ArrayList<NodosRamas> noMarcado = new ArrayList<>();
 
         ArrayList<NodosRamas> nodosDelAFD = new ArrayList<>();
 
+        /*Encontrando la raiz del arbol recientemente creado*/
+
+        /*REVISAR ESTO POR SI CAUSA PROBLEMAS*/
+        /*Nuevo Update, probablemente ya no cause problemas, previendo que se dio el firstpos de la raiz, como se
+        * especifica en el libro del dragon*/
+
+
+        for(Rama nodo: ramasDelArbol){
+            if(nodo.getRightChild().getContenido().equals("#")){
+                HashSet<Rama> raiz = nodo.getFirstPos();
+                NodosRamas enraizado = new NodosRamas(raiz);
+                noMarcado.add(enraizado);
+            }
+        }
+
+
+
+
         int tamano = 0;
-        noMarcado.add(enraizado);
         while(true){
             tamano = noMarcado.size();
             if(index >= tamano){

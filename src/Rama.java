@@ -12,8 +12,8 @@ public class Rama {
     private HashSet<Rama> lastPos = new HashSet<>();
     private HashSet<Rama> followPos = new HashSet<>();
 
-    private Rama leftChild;
-    private Rama rightChild;
+    private Rama leftChild = new Rama("");
+    private Rama rightChild = new Rama("");
 
     /*Tomaremos firstPos como el identificador de las ramas que tiene cada RAMA*/
     private ArrayList<String> transiciones = new ArrayList<>();
@@ -24,6 +24,7 @@ public class Rama {
         this.contenido = s;
 
     }
+
 
     public void setLeftChild(Rama leftChild) {
         this.leftChild = leftChild;
@@ -67,6 +68,56 @@ public class Rama {
 
     public HashSet<Rama> getFollowPos() {
         return followPos;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
+    public void setFirstPos(HashSet<Rama> firstPos) {
+        this.firstPos = firstPos;
+    }
+
+    public void setLastPos(HashSet<Rama> lastPos) {
+        this.lastPos = lastPos;
+    }
+
+    public void setFollowPos(HashSet<Rama> followPos) {
+        this.followPos = followPos;
+    }
+
+    public void setTransiciones(ArrayList<String> transiciones) {
+        this.transiciones = transiciones;
+    }
+
+    public void setArrivals(ArrayList<Rama> arrivals) {
+        this.arrivals = arrivals;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public ArrayList<String> getTransiciones() {
+        return transiciones;
+    }
+
+    public ArrayList<Rama> getArrivals() {
+        return arrivals;
+    }
+
+    public void settearTodo(Rama r){
+        this.contenido = r.getContenido();
+        this.ID = r.getID();
+        this.nullable = r.isNullable();
+        this.firstPos = r.getFirstPos();
+        this.lastPos = r.getLastPos();
+        this.followPos = r.getFollowPos();
+        this.leftChild = r.getLeftChild();
+        this.rightChild = r.getRightChild();
+        this.transiciones = r.getTransiciones();
+        this.arrivals = r.getArrivals();
+
     }
 
     @Override
