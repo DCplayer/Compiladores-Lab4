@@ -43,4 +43,12 @@ public class NodosRamas {
     public void setId(int id) {
         this.id = id;
     }
+
+    public ArrayList<String> getTransiciones() {
+        return transiciones;
+    }
+
+    public ArrayList<NodosRamas> getArrivals() {
+        return arrivals;
+    }
 }

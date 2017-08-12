@@ -1,3 +1,4 @@
+import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
@@ -174,6 +175,15 @@ public class Arbol {
         return resultado;
     }
 
+    public boolean estaEnElConjunto(ArrayList<NodosRamas> listado, NodosRamas nodazo){
+        for (NodosRamas r: listado){
+            if(r.getConjunto().equals(nodazo.getConjunto())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public ArrayList<NodosRamas> CrearElAFDDirecto(String regex){
         crearElArbol(regex);
@@ -187,7 +197,7 @@ public class Arbol {
         /*Creando el alfabeto del AFD*/
         HashSet<String> alfabeto = new HashSet<>();
         for(Rama elemento: transicionesIdentificadas){
-            if(!elemento.getContenido().equals("@") || !elemento.getContenido().equals("#")){
+            if(!elemento.getContenido().equals("@") && !elemento.getContenido().equals("#")){
                 alfabeto.add(elemento.getContenido());
             }
 
@@ -206,11 +216,18 @@ public class Arbol {
 
 
         for(Rama nodo: ramasDelArbol){
-            if(nodo.getRightChild().getContenido().equals("#")){
+            if(nodo.getLeftChild() != null && nodo.getRightChild() != null){
+                if (nodo.getRightChild().getContenido().equals("#")){
+                    HashSet<Rama> raiz = nodo.getFirstPos();
+                    NodosRamas enraizado = new NodosRamas(raiz);
+                    noMarcado.add(enraizado);
+                }
+            }
+            /*if(nodo.getLeftChild() != null && nodo.getRightChild().getContenido().equals("#")){
                 HashSet<Rama> raiz = nodo.getFirstPos();
                 NodosRamas enraizado = new NodosRamas(raiz);
                 noMarcado.add(enraizado);
-            }
+            }*/
         }
 
 
@@ -233,7 +250,17 @@ public class Arbol {
                 NodosRamas nodoAgregado = new NodosRamas(movidaDelNodo);
                 x.add(stringy, nodoAgregado);
 
-                if (!noMarcado.contains(nodoAgregado)){
+
+                /*He aqui el probelma, no esta diferenciando los objetos de NodosRamas correctamente, preferible hacer
+                * un comparador con un atributo, modificar el .equals o bien usar un HasSet*/
+                /*int revision = 0;
+                while (revision < noMarcado.size()){
+                    if(noMarcado.get(revision).getConjunto().equals(nodoAgregado.getConjunto())){
+                        noMarcado.add(nodoAgregado);
+                        break;
+                    }
+                }*/
+                if (!estaEnElConjunto(noMarcado, nodoAgregado)){
                     noMarcado.add(nodoAgregado);
                 }
 

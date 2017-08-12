@@ -12,8 +12,8 @@ public class Rama {
     private HashSet<Rama> lastPos = new HashSet<>();
     private HashSet<Rama> followPos = new HashSet<>();
 
-    private Rama leftChild = new Rama("");
-    private Rama rightChild = new Rama("");
+    private Rama leftChild = null;
+    private Rama rightChild = null;
 
     /*Tomaremos firstPos como el identificador de las ramas que tiene cada RAMA*/
     private ArrayList<String> transiciones = new ArrayList<>();

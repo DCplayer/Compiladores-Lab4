@@ -108,7 +108,32 @@ public class Main {
         }
 
         Arbol elArbol = new Arbol();
-        elArbol.CrearElAFDDirecto(regex);
+        ArrayList<NodosRamas> directo = elArbol.CrearElAFDDirecto(regex);
+        System.out.println("*************************************************************");
+        for (NodosRamas r : directo){
+            System.out.println("-------------------------------------");
+            boolean seraFinal = false;
+            for(Rama q: r.getConjunto()){
+                System.out.println(q.getID());
+                if(q.getID() == 6){
+                    seraFinal = true;
+                }
+            }
+            if(seraFinal){
+                System.out.println("Soy de Aceptacion");
+            }
+            if(!seraFinal){
+                System.out.println("NO soy de Aceptacion");
+            }
+
+            int losStrings = 0;
+            while(losStrings < r.getTransiciones().size()){
+                System.out.println("Yo voy a " + r.getArrivals().get(losStrings) + " con la trans: " + r.getTransiciones().get(losStrings));
+                losStrings = losStrings + 1;
+            }
+
+
+        }
 
 
 
