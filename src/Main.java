@@ -54,9 +54,9 @@ public class Main {
         double tiempoConvertirAFNAFD = (tiempoFinalConvertirAFNAFD - tiempoInicialConvertirAFNAFD) / 1000000.0;
         convert.aceptacionEnAFD(AutomataFinal,noIdentificado);
 
-        /*------------------------------------------AFD------------------------------------------------------*/
+        /*------------------------------------------AFD en base a un AFN--------------------------------------*/
         ArrayList<NodoAFD> AFD = convert.NombrarNodosDelAFD(noIdentificado);
-        /*------------------------------------------AFD------------------------------------------------------*/
+        /*------------------------------------------AFD en base a un AFN--------------------------------------*/
 
 
 
@@ -106,6 +106,10 @@ public class Main {
                 seguimos = false;
             }
         }
+
+        Arbol elArbol = new Arbol();
+        elArbol.CrearElAFDDirecto(regex);
+
 
 
     }

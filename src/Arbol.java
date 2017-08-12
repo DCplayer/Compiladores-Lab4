@@ -175,7 +175,7 @@ public class Arbol {
     }
 
 
-    public ArrayList<Rama> CrearElAFDDirecto(String regex){
+    public ArrayList<NodosRamas> CrearElAFDDirecto(String regex){
         crearElArbol(regex);
         nombrarListas();
         primeroLoPrimerio();
@@ -229,20 +229,16 @@ public class Arbol {
             for (String stringy: alfabeto){
 
                 HashSet<Rama> movidaDelNodo = movimiento(stringy, x);
+                NodosRamas nodoAgregado = new NodosRamas(movidaDelNodo);
+                x.add(stringy, nodoAgregado);
 
-                HashSet<Nodo> z = eClosure(x);
-                HashSet<Nodo> y = move(z, stringy);
-
-                NodoAFD nodoFinal = new NodoAFD(y);
-                nodoInicial.add(stringy, nodoFinal);
-
-                AFD.add(x,stringy,y);
-                if(!noMarcado.contains(y)){
-                    noMarcado.add(y);
+                if (!noMarcado.contains(nodoAgregado)){
+                    noMarcado.add(nodoAgregado);
                 }
+
             }
         }
-        return nodosDelAFD;
+        return marcado;
     }
 
 
