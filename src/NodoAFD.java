@@ -12,6 +12,13 @@ public class NodoAFD {
     private ArrayList<String> transiciones = new ArrayList<>();
     private ArrayList<NodoAFD> arrivals = new ArrayList<>();
 
+    /*Esta ultima lista servira para saber a que particion pertenece dependiendo de la cantidad de elementos en el
+    * alfabeto y ademas a si se tiene que ese Nodo, con esa transicion llega o no a a un estado de Aceptacion
+    *
+    * Se queria hacer un ArrayList de booleanos pero es mejor de numero para identificar cada una de las particiones
+    * que se esta haciendo :D .*/
+    private ArrayList<Integer> particiones = new ArrayList<>();
+
     private boolean isInitial = false;
     private boolean isFinal = false;
 
@@ -59,5 +66,13 @@ public class NodoAFD {
 
     public boolean isFinal() {
         return isFinal;
+    }
+
+    public HashSet<NodoAFD> getConjuntoMinimo() {
+        return conjuntoMinimo;
+    }
+
+    public void setConjuntoMinimo(HashSet<NodoAFD> conjuntoMinimo) {
+        this.conjuntoMinimo = conjuntoMinimo;
     }
 }
