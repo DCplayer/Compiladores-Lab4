@@ -223,11 +223,7 @@ public class Arbol {
                     noMarcado.add(enraizado);
                 }
             }
-            /*if(nodo.getLeftChild() != null && nodo.getRightChild().getContenido().equals("#")){
-                HashSet<Rama> raiz = nodo.getFirstPos();
-                NodosRamas enraizado = new NodosRamas(raiz);
-                noMarcado.add(enraizado);
-            }*/
+
         }
 
 

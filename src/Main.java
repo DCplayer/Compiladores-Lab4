@@ -148,7 +148,7 @@ public class Main {
         }
 
 
-        System.out.println("***********************CreacionDirectaDelAFD**************************************");
+        System.out.println("\n***********************CreacionDirectaDelAFD**************************************");
         System.out.println("Se necesito de " + tiempoCrearDirectoElAFD + " milisegundos");
         for (NodosRamas r : directo){
             System.out.println("-------------------------------------");
