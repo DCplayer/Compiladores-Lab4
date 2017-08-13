@@ -111,7 +111,11 @@ public class Main {
 
 
         Arbol elArbol = new Arbol();
+
+        long tiempoInicialCrearDirectoElAFD = System.nanoTime();
         ArrayList<NodosRamas> directo = elArbol.CrearElAFDDirecto(regex);
+        long tiempoFinalCrearDirectoElAFD = System.nanoTime();
+        double tiempoCrearDirectoElAFD = (tiempoFinalCrearDirectoElAFD - tiempoInicialCrearDirectoElAFD) / 1000000.0;
 
         /*Identificar los nodos del AFD*/
         int numeroParaElID = 0;
@@ -121,7 +125,8 @@ public class Main {
         }
 
 
-        System.out.println("*************************************************************");
+        System.out.println("***********************CreacionDirectaDelAFD**************************************");
+        System.out.println("Se necesito de " + tiempoCrearDirectoElAFD + " milisegundos");
         for (NodosRamas r : directo){
             System.out.println("-------------------------------------");
             System.out.println("Mi ID es: " + r.getId());
@@ -147,6 +152,10 @@ public class Main {
 
 
         }
+
+        /*Finalmente, necesitaremos proveer la respuesta del AFD minimo*/
+        Particiones minimizador = new Particiones(AFD);
+        ArrayList<NodoAFD> AFDminimizado = minimizador.realizarLasParticiones();
 
 
 

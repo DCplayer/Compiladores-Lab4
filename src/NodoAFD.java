@@ -75,4 +75,8 @@ public class NodoAFD {
     public void setConjuntoMinimo(HashSet<NodoAFD> conjuntoMinimo) {
         this.conjuntoMinimo = conjuntoMinimo;
     }
+
+    public ArrayList<Integer> getParticiones() {
+        return particiones;
+    }
 }

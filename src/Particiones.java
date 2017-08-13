@@ -1,3 +1,5 @@
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -33,16 +35,52 @@ public class Particiones {
         return pasado;
     }
 
-    public ArrayList<NodoAFD> particion(){
-        ArrayList<NodoAFD> pasado = primeraParticion();
-        for(NodoAFD nodo: pasado){
+    public ArrayList<NodoAFD> particion(ArrayList<NodoAFD> elPasado){
+        HashSet<ArrayList<Integer>> listadoDeParticiones = new HashSet<>();
+        for(NodoAFD nodo: elPasado){
             for(NodoAFD i: nodo.getConjuntoMinimo()){
-                ArrayList<Integer> lasParticiones = new ArrayList<>();
                 for(String s: alfabeto){
-                    
+                    int indexParticion = 0;
+                    NodoAFD NodoDondeLLega = i.getArrivals().get(i.getTransiciones().indexOf(s));
+                    while(indexParticion < elPasado.size()){
+                        if(elPasado.get(indexParticion).getConjuntoMinimo().contains(NodoDondeLLega)){
+                            i.getParticiones().add(indexParticion);
+                        }
+                        indexParticion = indexParticion + 1;
+                    }
                 }
+                listadoDeParticiones.add(i.getParticiones());
             }
         }
+        ArrayList<NodoAFD>  presente = new ArrayList<>();
+        for(ArrayList<Integer> particion: listadoDeParticiones){
+            NodoAFD nodo = new NodoAFD(fachada);
+            for (NodoAFD x: grafo){
+                if(particion.equals(x.getParticiones())){
+                    nodo.getConjuntoMinimo().add(x);
+                }
+            }
+            presente.add(nodo);
+        }
+
+        for(NodoAFD g: grafo){
+            g.getParticiones().clear();
+        }
+        return presente;
+    }
+
+    public ArrayList<NodoAFD> realizarLasParticiones(){
+        ArrayList<NodoAFD> pasado = primeraParticion();
+        ArrayList<NodoAFD> presente = particion(pasado);
+
+        while (!pasado.equals(presente)){
+            pasado.clear();
+            pasado.addAll(presente);
+            presente.clear();
+            presente = particion(pasado);
+        }
+
+        return presente;
     }
 
 
