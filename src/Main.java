@@ -108,7 +108,30 @@ public class Main {
                 seguimos = false;
             }
         }
+/*------------------------------------------------Minimizacion de AFD------------------------------------------------*/
+        /*Finalmente, necesitaremos proveer la respuesta del AFD minimo*/
+        /*Particiones minimizador = new Particiones(AFD);
+        ArrayList<NodoAFD> AFDminimizado = minimizador.realizarLasParticiones();
 
+        for(NodoAFD nodo: AFDminimizado){
+            int numeroParaParticiones = 0;
+            nodo.setId(numeroParaParticiones);
+            while(numeroParaParticiones < minimizador.getAlfabeto().size()){
+                nodo.add(minimizador.getAlfabeto().get(numeroParaParticiones), AFDminimizado.get(nodo.getParticiones().get(numeroParaParticiones)));
+                numeroParaParticiones = numeroParaParticiones + 1;
+            }
+        }
+        System.out.println("****************AFD MINIMIZADO***************************");
+        for (NodoAFD n : AFDminimizado){
+            System.out.println("-------------------------------------------");
+            System.out.println("Yo me identifico como: " + n.getId());
+            for(String ss: n.getTransiciones()){
+                System.out.println("Yo puedo ir con " + ss + " al NodoAFD " + n.getArrivals().get(n.getTransiciones().indexOf(ss)).getId());
+            }
+
+
+        }
+/*------------------------------------------------Minimizacion de AFD------------------------------------------------*/
 
         Arbol elArbol = new Arbol();
 
@@ -153,9 +176,6 @@ public class Main {
 
         }
 
-        /*Finalmente, necesitaremos proveer la respuesta del AFD minimo*/
-        Particiones minimizador = new Particiones(AFD);
-        ArrayList<NodoAFD> AFDminimizado = minimizador.realizarLasParticiones();
 
 
 

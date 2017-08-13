@@ -17,7 +17,7 @@ public class Particiones {
 
     public ArrayList<NodoAFD> primeraParticion(){
         /*Obteniendo el alfabeto*/
-        alfabeto.addAll(grafo.get(0).getTransiciones());
+        alfabeto.addAll(grafo.get(1).getTransiciones());
 
         NodoAFD uno = new NodoAFD(fachada);
         NodoAFD dos = new NodoAFD(fachada);
@@ -55,6 +55,7 @@ public class Particiones {
         ArrayList<NodoAFD>  presente = new ArrayList<>();
         for(ArrayList<Integer> particion: listadoDeParticiones){
             NodoAFD nodo = new NodoAFD(fachada);
+            nodo.setParticiones(particion);
             for (NodoAFD x: grafo){
                 if(particion.equals(x.getParticiones())){
                     nodo.getConjuntoMinimo().add(x);
@@ -83,7 +84,9 @@ public class Particiones {
         return presente;
     }
 
-
+    public ArrayList<String> getAlfabeto() {
+        return alfabeto;
+    }
 }
 
 

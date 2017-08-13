@@ -7,7 +7,7 @@ import java.util.HashSet;
 public class NodoAFD {
     private int id;
     private HashSet<Nodo> conjunto;
-    private HashSet<NodoAFD> conjuntoMinimo;
+    private HashSet<NodoAFD> conjuntoMinimo = new HashSet<>();
 
     private ArrayList<String> transiciones = new ArrayList<>();
     private ArrayList<NodoAFD> arrivals = new ArrayList<>();
@@ -78,5 +78,9 @@ public class NodoAFD {
 
     public ArrayList<Integer> getParticiones() {
         return particiones;
+    }
+
+    public void setParticiones(ArrayList<Integer> particiones) {
+        this.particiones = particiones;
     }
 }
