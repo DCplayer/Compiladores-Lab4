@@ -213,4 +213,47 @@ public class ConvertidorAfnAfd {
         return false;
 
     }
+
+    public ArrayList<Transicion> getTransiciones(ArrayList<NodoAFD> AFD){
+        ArrayList<Transicion> trans = new ArrayList<>();
+        for(NodoAFD i: AFD){
+            int index = 0;
+            while(index < i.getTransiciones().size()){
+                Transicion t = new Transicion(i.getId(), i.getTransiciones().get(index), i.getArrivals().get(index).getId());
+                trans.add(t);
+                index = index +1;
+            }
+        }
+        return trans;
+    }
+
+    public ArrayList<String> getSimbolos(ArrayList<NodoAFD> a){
+        ArrayList<String> simbolos = new ArrayList<>();
+        for (NodoAFD i : a){
+            for (String s: i.getTransiciones()){
+                if (!simbolos.contains(s) && !s.equals("@")){
+                    simbolos.add(s);
+                }
+            }
+        }
+        return simbolos;
+    }
+
+    public int getNodoInicial(ArrayList<NodoAFD> n){
+
+        for(NodoAFD i : n){
+            if(i.isInitial()){
+                return i.getId();
+            }
+        }return 0;
+    }
+
+    public int getNodoFinal(ArrayList<NodoAFD> n){
+
+        for(NodoAFD i : n){
+            if(i.isFinal()){
+                return i.getId();
+            }
+        }return 0;
+    }
 }

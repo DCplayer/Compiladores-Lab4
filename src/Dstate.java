@@ -5,6 +5,8 @@ import java.util.HashSet;
  * Created by Diego Castaneda on 16/08/2017.
  */
 public class Dstate {
+    private int ID = 0;
+
     private HashSet<NodoAFD> contenido = new HashSet<>();
     private HashSet<Dstate> parejasDependientes = new HashSet<>();
 
@@ -42,5 +44,13 @@ public class Dstate {
 
     public void setTransiciones(ArrayList<String> transiciones) {
         this.transiciones = transiciones;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public int getID() {
+        return ID;
     }
 }

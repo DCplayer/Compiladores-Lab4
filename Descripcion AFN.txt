@@ -1,0 +1,7 @@
+AFN:
+Nodos: [6, 4, 0, 1, 2, 3, 5, 8, 10, 12, 13]
+Nodo Inicial: 6
+Nodo Final: 13
+Simbolos: [a, b]
+Transiciones: [{6, @, 4}, {6, @, 8}, {4, @, 0}, {4, @, 2}, {0, a, 1}, {1, @, 5}, {2, b, 3}, {3, @, 5}, {5, @, 4}, {5, @, 8}, {8, a, 10}, {10, b, 12}, {12, b, 13}]
+Tiempo de Creacion: 2.077082 milisegundos

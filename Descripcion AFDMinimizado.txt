@@ -1,0 +1,7 @@
+AFD:
+Nodos: [0, 1, 2, 3]
+Nodo Inicial: 3
+Nodo Final: 2
+Simbolos: [a, b]
+Transiciones: [{0, a, 0}, {0, b, 1}, {1, a, 0}, {1, b, 2}, {2, a, 0}, {2, b, 3}, {3, a, 0}, {3, b, 3}, {3, a, 0}, {3, b, 3}]
+Tiempo de Creacion: 1.827528 milisegundos

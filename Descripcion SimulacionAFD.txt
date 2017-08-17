@@ -1,0 +1,2 @@
+Cadena: No Aceptada
+tiempo: 0.040176 milisegundos

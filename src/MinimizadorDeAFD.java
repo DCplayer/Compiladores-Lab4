@@ -255,10 +255,10 @@ public class MinimizadorDeAFD {
         for(Dstate D: finalizado){
             for(NodoAFD n: D.getContenido()){
                 int index = 0;
-                System.out.println(alfabeto);
+
                 while(index < alfabeto.size()){
                     int indexirino = n.getTransiciones().indexOf(alfabeto.get(index));
-                    System.out.println(n.getTransiciones());
+
                     D.getTransiciones().add(n.getTransiciones().get(indexirino));
                     for(Dstate DD: finalizado){
                         if(DD.getContenido().contains(n.getArrivals().get(index))){
@@ -275,6 +275,56 @@ public class MinimizadorDeAFD {
 
 
         return finalizado;
+    }
+
+    public ArrayList<Transicion> getTransiciones(ArrayList<Dstate> a){
+        ArrayList<Transicion> transiciones = new ArrayList<>();
+        for(Dstate i: a){
+            int index = 0;
+            while (index < i.getArrivals().size()){
+                Transicion t = new Transicion(i.getID(), i.getTransiciones().get(index), i.getArrivals().get(index).getID());
+                transiciones.add(t);
+                index = index + 1;
+            }
+
+        }
+        return transiciones;
+    }
+
+    public ArrayList<String> getSimbolos(ArrayList<Dstate> a){
+        ArrayList<String> simbolos = new ArrayList<>();
+        for (Dstate i : a){
+            for (String s: i.getTransiciones()){
+                if (!simbolos.contains(s) && !s.equals("@")){
+                    simbolos.add(s);
+                }
+            }
+        }
+        return simbolos;
+    }
+
+    public int getNodoInicial(ArrayList<Dstate> n){
+
+        for(Dstate i : n){
+            for(NodoAFD x: i.getContenido()){
+                if(x.isInitial()){
+                    return i.getID();
+                }
+            }
+
+        }return 0;
+    }
+
+    public int getNodoFinal(ArrayList<Dstate> n){
+
+        for(Dstate i : n){
+            for(NodoAFD x: i.getContenido()){
+                if(x.isFinal()){
+                    return i.getID();
+                }
+            }
+
+        }return 0;
     }
 
 

@@ -3,6 +3,9 @@ import sun.plugin.javascript.navig.AnchorArray;
 import sun.plugin.javascript.navig.Array;
 
 import javax.net.ssl.SSLEngineResult;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -19,10 +22,10 @@ public class Main {
 
 
 
-        long  tiempoInicialAFD = System.nanoTime();
+        long  tiempoInicialAFN = System.nanoTime();
         Automata AutomataFinal = control.LectorDeExpresiones();
-        long tiempoFinalAFD = System.nanoTime();
-        double  tiempoAFD = (tiempoFinalAFD - tiempoInicialAFD) / 1000000.0;
+        long tiempoFinalAFN = System.nanoTime();
+        double  tiempoAFN = (tiempoFinalAFN - tiempoInicialAFN) / 1000000.0;
 
 
         /*------------------------------------------AFN------------------------------------------------------*/
@@ -51,6 +54,23 @@ public class Main {
         HashSet<Nodo> inicial = new HashSet<>();
         inicial.add(AutomataFinal.getNodoInicial());
 
+
+        BufferedWriter bw2 = null;
+        FileWriter fw2 = null;
+
+
+        try {
+
+            PrintWriter writer = new PrintWriter("Descripcion AFN.txt");
+            writer.println("AFN:\nNodos: " +ids + "\nNodo Inicial: " + IdInicial+ "\nNodo Final: " + IdFinal+ "\nSimbolos: " + s + "\nTransiciones: " + t + "\nTiempo de Creacion: " + tiempoAFN + " milisegundos");
+            writer.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
         long tiempoInicialConvertirAFNAFD = System.nanoTime();
         ArrayList<NodoAFD> noIdentificado = convert.ConvertirAfnAfd(inicial, s);
         long tiempoFinalConvertirAFNAFD = System.nanoTime();
@@ -61,22 +81,86 @@ public class Main {
         ArrayList<NodoAFD> AFD = convert.NombrarNodosDelAFD(noIdentificado);
         /*------------------------------------------AFD en base a un AFN--------------------------------------*/
 
+        ArrayList<String> simbolos = convert.getSimbolos(AFD);
+        ArrayList<Transicion> trensi = convert.getTransiciones(AFD);
+        int inicio = convert.getNodoInicial(AFD);
+        int finiti = convert.getNodoFinal(AFD);
+
+        ArrayList<Integer> iDs = new ArrayList<Integer>();
+        for(NodoAFD i: AFD){
+            iDs.add(i.getId());
+        }
+
+
+
+        BufferedWriter bw3 = null;
+        FileWriter fw3 = null;
+
+
+        try {
+
+            PrintWriter writer = new PrintWriter("Descripcion AFN-AFD.txt");
+            writer.println("AFN-AFD:\nNodos: " +iDs + "\nNodo Inicial: " + inicio+ "\nNodo Final: " + finiti+ "\nSimbolos: " + simbolos+ "\nTransiciones: " + trensi+ "\nTiempo de Creacion: " + tiempoConvertirAFNAFD+ " milisegundos");
+            writer.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+/*------------------------------------------------------Minimizacion de AFD-------------------------------------------------------------------------------*/
+
+        long tiempoInicialMini = System.nanoTime();
         MinimizadorDeAFD minimizador = new MinimizadorDeAFD(AFD.get(0).getTransiciones());
         minimizador.crearLasParejasEIdentificarlas(AFD);
         minimizador.movimientoDeParejas();
+        long tiempoFinalMini = System.nanoTime();
+        double tiempoMini = (tiempoFinalMini- tiempoInicialMini) / 1000000.0;
+
         ArrayList<Dstate> nodazos = minimizador.nodosDelAFD();
 
+        int contador = 0;
+        for(Dstate i: nodazos){
+            i.setID(contador);
+            contador = contador + 1;
+        }
+
+        ArrayList<Integer> idsMini = new ArrayList<Integer>();
+        for(Dstate i: nodazos){
+            idsMini.add(i.getID());
+        }
+
+        ArrayList<Transicion> transiDeMini = minimizador.getTransiciones(nodazos);
+        int inicioMini = minimizador.getNodoInicial(nodazos);
+        int finalMini = minimizador.getNodoFinal(nodazos);
+        ArrayList<String> simbDeMini = minimizador.getSimbolos(nodazos);
+
+        BufferedWriter bw6 = null;
+        FileWriter fw6 = null;
 
 
-        System.out.println("Tiempo de Creacion del AFN");
-        System.out.println("" + tiempoAFD + " milisegundos");
-        System.out.println("Tiempo de convertir el AFN a un ADF");
-        System.out.println("" + tiempoConvertirAFNAFD + " milisegundos");
+        try {
+
+            PrintWriter writer = new PrintWriter("Descripcion AFDMinimizado.txt");
+            writer.println("AFD:\nNodos: " +idsMini + "\nNodo Inicial: " + +inicioMini+ "\nNodo Final: " + finalMini+ "\nSimbolos: " + simbDeMini+ "\nTransiciones: " + transiDeMini+ "\nTiempo de Creacion: " + tiempoMini+ " milisegundos" );
+            writer.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+
+
 
 
 
         boolean seguimos = true;
         while (seguimos){
+
+
 
             System.out.println("\nIngrese la cadena que desea simular : ");
             String simulacion = sc.nextLine();
@@ -86,61 +170,62 @@ public class Main {
             long tiempoFinalSimulacionAFN = System.nanoTime();
             double tiempoSimulacionAFN = (tiempoFinalSimulacionAFN-tiempoInicialSimulacionAFN )/1000000.0;
 
-            System.out.println("---------------------------AFN---------------------------");
-            if (simulacionAFN){
-                System.out.println("          Cadena: Aceptada");
+            BufferedWriter bw4 = null;
+            FileWriter fw4 = null;
+
+
+            try {
+
+                PrintWriter writer = new PrintWriter("Descripcion SimulacionAFN.txt");
+                if(simulacionAFN){
+                    writer.println("Cadena: Aceptada\n" + "tiempo: " + tiempoSimulacionAFN + " milisegundos");
+                }
+                else{
+                    writer.println("Cadena: No Aceptada\n" + "tiempo: " + tiempoSimulacionAFN + " milisegundos");
+                }
+
+                writer.close();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
             }
-            else{
-                System.out.println("          Cadena: No Aceptada");
-            }
-            System.out.println("          tiempo: " + tiempoSimulacionAFN + " milisegundos");
 
             long tiempoInicialSimulacionAFD = System.nanoTime();
             boolean simulacionAFD = convert.simularAFD(AFD, simulacion);
             long tiempoFinalSimulacionAFD = System.nanoTime();
             double tiempoSimulacionAFD = (tiempoFinalSimulacionAFD - tiempoInicialSimulacionAFD)/1000000.0;
 
-            System.out.println("---------------------------AFD---------------------------");
-            if (simulacionAFD){
-                System.out.println("          Cadena: Aceptada");
-            }
-            else{
-                System.out.println("          Cadena: No Aceptada");
-            }
-            System.out.println("          tiempo: " + tiempoSimulacionAFD + " milisegundos");
+            BufferedWriter bw5 = null;
+            FileWriter fw5 = null;
 
 
+            try {
+
+                PrintWriter writer = new PrintWriter("Descripcion SimulacionAFD.txt");
+                if(simulacionAFN){
+                    writer.println("Cadena: Aceptada\n" + "tiempo: " + tiempoSimulacionAFD+ " milisegundos");
+                }
+                else{
+                    writer.println("Cadena: No Aceptada\n" + "tiempo: " + tiempoSimulacionAFD + " milisegundos");
+                }
+
+                writer.close();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
             System.out.println("\nDesea seguir simulando cadenas (0 NO/1 SI) : ");
             String respuesta = sc.nextLine();
             if (respuesta.equals("0")){
                 seguimos = false;
             }
         }
-/*------------------------------------------------Minimizacion de AFD------------------------------------------------*/
-        /*Finalmente, necesitaremos proveer la respuesta del AFD minimo*/
-        /*Particiones minimizador = new Particiones(AFD);
-        ArrayList<NodoAFD> AFDminimizado = minimizador.realizarLasParticiones();
 
-        for(NodoAFD nodo: AFDminimizado){
-            int numeroParaParticiones = 0;
-            nodo.setId(numeroParaParticiones);
-            while(numeroParaParticiones < minimizador.getAlfabeto().size()){
-                nodo.add(minimizador.getAlfabeto().get(numeroParaParticiones), AFDminimizado.get(nodo.getParticiones().get(numeroParaParticiones)));
-                numeroParaParticiones = numeroParaParticiones + 1;
-            }
-        }
-        System.out.println("****************AFD MINIMIZADO***************************");
-        for (NodoAFD n : AFDminimizado){
-            System.out.println("-------------------------------------------");
-            System.out.println("Yo me identifico como: " + n.getId());
-            for(String ss: n.getTransiciones()){
-                System.out.println("Yo puedo ir con " + ss + " al NodoAFD " + n.getArrivals().get(n.getTransiciones().indexOf(ss)).getId());
-            }
-
-
-        }
-/*------------------------------------------------Minimizacion de AFD------------------------------------------------*/
-
+/*---------------------------------------------CreacionDirecta--------------------------------------------------------------*/
         Arbol elArbol = new Arbol();
 
         long tiempoInicialCrearDirectoElAFD = System.nanoTime();
