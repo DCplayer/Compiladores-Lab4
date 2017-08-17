@@ -22,6 +22,8 @@ public class NodoAFD {
     private boolean isInitial = false;
     private boolean isFinal = false;
 
+    private HashSet<HashSet<NodoAFD>> parejasDependientes = new HashSet<>();
+
     public NodoAFD(HashSet<Nodo> propiedad) {
         this.conjunto= propiedad;
 
@@ -82,5 +84,13 @@ public class NodoAFD {
 
     public void setParticiones(ArrayList<Integer> particiones) {
         this.particiones = particiones;
+    }
+
+    public HashSet<HashSet<NodoAFD>> getParejasDependientes() {
+        return parejasDependientes;
+    }
+
+    public void setParejasDependientes(HashSet<HashSet<NodoAFD>> parejasDependientes) {
+        this.parejasDependientes = parejasDependientes;
     }
 }

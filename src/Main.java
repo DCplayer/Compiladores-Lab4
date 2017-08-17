@@ -1,3 +1,4 @@
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import sun.plugin.javascript.navig.AnchorArray;
 import sun.plugin.javascript.navig.Array;
 
@@ -15,6 +16,8 @@ public class Main {
         String regex = sc.nextLine();
         Controlador control = new Controlador(regex);
         ConvertidorAfnAfd convert = new ConvertidorAfnAfd();
+
+
 
         long  tiempoInicialAFD = System.nanoTime();
         Automata AutomataFinal = control.LectorDeExpresiones();
@@ -57,6 +60,11 @@ public class Main {
         /*------------------------------------------AFD en base a un AFN--------------------------------------*/
         ArrayList<NodoAFD> AFD = convert.NombrarNodosDelAFD(noIdentificado);
         /*------------------------------------------AFD en base a un AFN--------------------------------------*/
+
+        MinimizadorDeAFD minimizador = new MinimizadorDeAFD(AFD.get(0).getTransiciones());
+        minimizador.crearLasParejasEIdentificarlas(AFD);
+        minimizador.movimientoDeParejas();
+        ArrayList<Dstate> nodazos = minimizador.nodosDelAFD();
 
 
 
